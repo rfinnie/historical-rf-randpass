@@ -1,0 +1,10 @@
+RF Random Password Generator 1.2
+by Ryan Finnie <ryan@finnie.org>
+
+Notes:
+* Base requirement is PHP 4.0.1 or above.
+* PHP must be compiled --with-mhash and --with-mcrypt for NT and LM
+  hash functionality.
+* Crypt function availablity is host-dependant and is checked for
+  automatically.
+* SHA1 hashing requires PHP 4.3.0 or above, OR --with-mhash.
