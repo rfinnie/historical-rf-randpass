@@ -1,10 +1,27 @@
-RF Random Password Generator 1.2
+RF Random Password Generator 1.3
 by Ryan Finnie <ryan@finnie.org>
 
 Notes:
-* Base requirement is PHP 4.0.1 or above.
+* Base requirement is PHP 4.0.1 or above.  Any extra functionality is
+  used only if extra library support is detected.
 * PHP must be compiled --with-mhash and --with-mcrypt for NT and LM
   hash functionality.
 * Crypt function availablity is host-dependant and is checked for
   automatically.
 * SHA1 hashing requires PHP 4.3.0 or above, OR --with-mhash.
+* MD4 hashing requires PHP be compiled --with-mhash.
+* Cracklib support requires PHP be compiled --with-crack.
+
+ChangeLog:
+
+Version 1.3, Dec  2 2004:
+* Added in-code quantity and length limits to prevent hammering server.
+* Added some in-code documentation.
+* Added cracklib checking (if PHP compiled --with-crack).
+* Added MD4 hashing (if PHP compiled --with-mhash).
+* Added option for specifying whether similar characters are used.
+* Cleaned up "minimum required" section, checkboxes removed.
+* Added several informational warnings.
+
+Version 1.2, Feb 23 2004:
+* Initial public release (1.0 and 1.1 were in-house).

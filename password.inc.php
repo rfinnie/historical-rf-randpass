@@ -20,42 +20,52 @@ function a_array_rand($input, $num_req) {
   return $out;
 }
 
-function gpass($num, $lluse, $llnum, $luuse, $lunum, $nuse, $nnum, $puse, $pnum) {
+function gpass($criteria) {
   $outarray = array();
 
-  $llower = explode(":", "a:b:c:d:e:f:g:h:k:m:n:p:q:r:s:t:u:v:w:x:y:z");
+  if($criteria['no_use_similar']) {
+    $raw_lower = "a b c d e f g h k m n p q r s t u v w x y z";
+    $raw_numbers = "2 3 4 5 6 7 8 9";
+    $raw_punc = "# $ % ^ & * ( ) _ - + = . , [ ] { } :";
+  } else {
+    $raw_lower = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
+    $raw_numbers = "1 2 3 4 5 6 7 8 9 0";
+    $raw_punc = "# $ % ^ & * ( ) _ - + = . , [ ] { } : |";
+  }
+  $llower = explode(" ", $raw_lower);
   shuffle($llower);
-  $lupper = explode(":", "A:B:C:D:E:F:G:H:K:M:N:P:Q:R:S:T:U:V:W:X:Y:Z");
+  $lupper = explode(" ", strtoupper($raw_lower));
   shuffle($lupper);
-  $numbers = explode(":", "2:3:4:5:6:7:8:9");
+  $numbers = explode(" ", $raw_numbers);
   shuffle($numbers);
-  $punc = explode(":", "#:$:%:^:&:*:(:):_:-:+:=:.:,:[:]:{:}");
+  $punc = explode(" ", $raw_punc);
   shuffle($punc);
 
-  if($lluse) {
-    $outarray = array_merge($outarray, a_array_rand($llower, $llnum));
+  if($criteria['lowercase'] > 0) {
+    $outarray = array_merge($outarray, a_array_rand($llower, $criteria['lowercase']));
   }
-  if($luuse) {
-    $outarray = array_merge($outarray, a_array_rand($lupper, $lunum));
+  if($criteria['uppercase'] > 0) {
+    $outarray = array_merge($outarray, a_array_rand($lupper, $criteria['uppercase']));
   }
-  if($nuse) {
-    $outarray = array_merge($outarray, a_array_rand($numbers, $nnum));
+  if($criteria['numbers'] > 0) {
+    $outarray = array_merge($outarray, a_array_rand($numbers, $criteria['numbers']));
   }
-  if($puse) {
-    $outarray = array_merge($outarray, a_array_rand($punc, $pnum));
+  if($criteria['punctuation'] > 0) {
+    $outarray = array_merge($outarray, a_array_rand($punc, $criteria['punctuation']));
   }
 
-  if(($llnum + $lunum + $nnum + $pnum) < $num) {
+  $num_spec = $criteria['lowercase'] + $criteria['uppercase'] + $criteria['numbers'] + $criteria['punctuation'];
+  if($num_spec < $criteria['num']) {
     $leftover = array();
-    if($lluse) { $leftover = array_merge($leftover, $llower); }
-    if($luuse) { $leftover = array_merge($leftover, $lupper); }
-    if($nuse) { $leftover = array_merge($leftover, $numbers); }
-    if($puse) { $leftover = array_merge($leftover, $punc); }
+    if($criteria['lowercase'] > 0) { $leftover = array_merge($leftover, $llower); }
+    if($criteria['uppercase'] > 0) { $leftover = array_merge($leftover, $lupper); }
+    if($criteria['numbers'] > 0) { $leftover = array_merge($leftover, $numbers); }
+    if($criteria['punctuation'] > 0) { $leftover = array_merge($leftover, $punc); }
     if(count($leftover) == 0) {
       $leftover = array_merge($leftover, $llower, $lupper, $numbers, $punc);
     }
     shuffle($leftover);
-    $outarray = array_merge($outarray, a_array_rand($leftover, $num - ($llnum + $lunum + $nnum + $pnum)));
+    $outarray = array_merge($outarray, a_array_rand($leftover, $criteria['num'] - $num_spec));
   }
   shuffle($outarray);
   return implode('', $outarray);
